@@ -38,6 +38,11 @@ type CfgStruct struct {
 	Level2     Level2
 }
 
+type CfgArrayStruct struct {
+	Level1text 	string
+	level3array []Level3
+}
+
 type anonymousEmbeddedStruct struct {
 	CfgStruct `mapstructure:",squash"`
 	Level4    string
@@ -243,4 +248,20 @@ func Test_Load(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, cfg.Level2.Level2text, "newTextValue")
 	})
+}
+
+func Test_LoadArray(t *testing.T) {
+	cfg := CfgArrayStruct{}
+	params := insconfig.Params{
+		EnvPrefix:        "testprefix",
+		ConfigPathGetter: testPathGetter{"test_config_array.yaml"},
+	}
+
+	insConfigurator := insconfig.New(params)
+	err := insConfigurator.Load(&cfg)
+	require.NoError(t, err)
+	require.Equal(t, cfg.Level1text, "text1")
+	//require.Equal(t, len(cfg.level3array), 2)
+	//require.Equal(t, cfg.Level2.Level2text, "text2")
+	//require.Equal(t, cfg.Level2.Level3.Level3text, "text3")
 }

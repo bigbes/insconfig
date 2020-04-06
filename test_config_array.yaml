@@ -1,0 +1,6 @@
+level1text: text1
+level3array:
+  - level3text: text3
+    nullstring: text
+  - level3text: text3
+    nullstring: text
